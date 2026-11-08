@@ -344,12 +344,28 @@ void fdc_state_machine(void)
 //         1                 ------- Track --------
 //         2                 ------- Sector -------
 //         3                 ------- Data ---------
+static void fdc_mark_not_ready(void)
+{
+    FDC.status = ST_NOT_READY;
+    FDC.commandType = 1;
+    FDC.int_req = 0x80;
+    FDC.wait_for_read = 2;
+    FDC.wait_for_write = 2;
+    FDC.read_timeout = 0;
+    FDC.busy_countdown = 0;
+}
+
 u8 fdc_read(u8 addr)
 {
-    if (FDC.drive >= Geom.drives) FDC.status |= ST_NOT_READY;
-    else FDC.status &= ~ST_NOT_READY;
-
-    fdc_state_machine();    // Clock the floppy drive controller state machine
+    if (FDC.drive >= Geom.drives)
+    {
+        fdc_mark_not_ready();
+    }
+    else
+    {
+        FDC.status &= ~ST_NOT_READY;
+        fdc_state_machine();    // Clock the floppy drive controller state machine
+    }
 
     fdc_debug(0, addr, 0);  // Debug the read routine
     
@@ -399,6 +415,13 @@ u8 fdc_read(u8 addr)
 //   IV   Force interrupt    1   1   0   1   i3  i2  i1  i0
 void fdc_write(u8 addr, u8 data)
 {
+    if (FDC.drive >= Geom.drives)
+    {
+        fdc_mark_not_ready();
+        fdc_debug(1, addr, data);
+        return;
+    }
+
     fdc_state_machine(); // Clock the state machine before we check for a new command
     
     // -------------------------------------------------------
@@ -418,8 +441,6 @@ void fdc_write(u8 addr, u8 data)
     }
 
     fdc_debug(1, addr, data);   // Debug the write routine
-
-    if (FDC.drive >= Geom.drives) return; // Make sure this is a valid drive before we process anything below...
 
     // ------------------------------------------------------------------
     // If command.... we must set the right bits in the status register.
