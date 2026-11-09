@@ -69,8 +69,10 @@ legacy formatted-output and heap-helper names from the new SDK. The application'
 normal Makefiles and SDK headers are not patched. This is a build option, not an
 upstream SDK migration or proof of hardware timing/audio compatibility.
 
-A complete BlocksDS build and the sanitized host tests passed locally. Actual DS/DSi
-argv launches and title compatibility still require console/emulator validation.
+A complete BlocksDS build and the sanitized host tests passed locally. DSi-mode melonDS checks through Gloam verified argv cartridge startup through
+the MSX2 firmware and into a game intro using a `.mx2` file. Disk boot, general
+title compatibility, performance, saves and physical-console behavior remain
+unverified.
 
 The adapter compiles the top-level `Hachibitto.c` UI/audio unit with `-Os` so the
 new SDK's routines fit physical 32 KiB ITCM; CPU/video emulation units retain
