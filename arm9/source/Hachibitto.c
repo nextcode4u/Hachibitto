@@ -23,6 +23,7 @@
 
 #include "CRC32.h"
 #include "Hachibitto.h"
+#include "argv_launch.h"
 #include "MSX_generic.h"
 #include "V9938.h"
 #include "alpha_kbd.h"
@@ -2764,6 +2765,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    int launch_requested = argv_launch_prepare(argc, argv);
+
     // -----------------------------------------------------------------
     // Allocate the Large DSi buffer for expanded RAM banking...
     // -----------------------------------------------------------------
@@ -2869,6 +2872,10 @@ int main(int argc, char **argv)
     // -----------------------------------------
     LoadFavorites();
 
+    // Optional file launch, prepared before the browser changes its directory.
+    if (launch_requested)
+        myGlobalConfig.bShowInstructions = 0;
+
     // ----------------------------------------
     // Get into the best directory possible...
     // ----------------------------------------
@@ -2892,7 +2899,8 @@ int main(int argc, char **argv)
             SoundPause();
 
             //  Choose carts and disks and options
-            HachibittoMainMenu();
+            if (!argv_launch_start())
+                HachibittoMainMenu();
 
             //  Run Machine
             HachibittoInitCPU();
