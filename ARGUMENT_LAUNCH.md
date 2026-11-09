@@ -44,6 +44,40 @@ initialization and before the normal selection menu. The original Makefiles are
 unchanged. This branch started from upstream commit
 `08edf9423a0c005cc58bf448901626ea2d637bf6`.
 
+## Building
+
+### Optional current BlocksDS build
+
+The original devkitARM/libnds Makefiles remain available with their original SDK
+requirements. To build using current BlocksDS instead, run the separate adapter:
+
+```sh
+python3 tools/build_blocksds.py --clean
+```
+
+Requirements are Python 3.9 or later, BlocksDS 1.25 (including libnds, Maxmod,
+DSWiFi and its asset tools), and the Wonderful ARM GCC toolchain. Local builds used
+Wonderful GCC 16.2. Defaults are `/opt/blocksds/core` and
+`/opt/wonderful/toolchain/gcc-arm-none-eabi/bin`; override them using `--blocksds`
+and `--toolchain`. `BLOCKSDS` also supplies the SDK default. Use `--jobs` to control
+parallel compilation.
+
+The adapter reads upstream's source/include/asset/library lists and writes all
+objects, generated graphics, linker maps and the NDS file under `build/blocksds/`.
+It rebuilds all selected sources each run. A forced compatibility header isolates
+legacy formatted-output and heap-helper names from the new SDK. The application's
+normal Makefiles and SDK headers are not patched. This is a build option, not an
+upstream SDK migration or proof of hardware timing/audio compatibility.
+
+A complete BlocksDS build and the sanitized host tests passed locally. Actual DS/DSi
+argv launches and title compatibility still require console/emulator validation.
+
+The adapter compiles the top-level `Hachibitto.c` UI/audio unit with `-Os` so the
+new SDK's routines fit physical 32 KiB ITCM; CPU/video emulation units retain
+upstream's `-O2`. The tested map uses 32,736 bytes of ITCM (32 bytes spare), so
+future changes must be checked against the linker map. The linker memory limits
+have not been enlarged. Performance impact has not been measured on hardware.
+
 ## Keeping up with upstream
 
 The `argv-launch` branch contains the fork additions; `main` is kept as an upstream

@@ -4,3 +4,11 @@ arm7/build/
 arm9/build/
 
 *.elf
+
+# Optional BlocksDS output and generated compiler files.
+/build/
+*.o
+*.d
+*.map
+*.nds
+__pycache__/
