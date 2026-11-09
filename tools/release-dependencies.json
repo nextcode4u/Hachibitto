@@ -1,0 +1,39 @@
+{
+  "blocksds-sdk": {
+    "archive": "blocksds-sdk-da93ad5.tar.gz",
+    "directory": "sdk-da93ad5cda6f3aea01769959b3ef7b3c5dd93673",
+    "url": "https://codeload.github.com/blocksds/sdk/tar.gz/da93ad5cda6f3aea01769959b3ef7b3c5dd93673",
+    "sha256": "a98bd684bab559e5c8220491fb1fa5392cc2211aa67ee7061aea1687dba00f66",
+    "notices": []
+  },
+  "blocksds-libnds": {
+    "archive": "blocksds-libnds-e478cc6.tar.gz",
+    "directory": "libnds-e478cc660a8c7254fbffc54bda3ce0b93ab14c15",
+    "url": "https://codeload.github.com/blocksds/libnds/tar.gz/e478cc660a8c7254fbffc54bda3ce0b93ab14c15",
+    "sha256": "44ba66904cf106b47d917ab2681a0ec0c6f7b360c39637eb2bf129a9b12fbac6",
+    "notices": [
+      "licenses/LICENSE",
+      "licenses/LICENSE.FatFs"
+    ]
+  },
+  "maxmod": {
+    "archive": "maxmod-8f7e2fa.tar.gz",
+    "directory": "maxmod-8f7e2faa7db4ef5f7824af3aa601188595a5ebc3",
+    "url": "https://codeload.github.com/blocksds/maxmod/tar.gz/8f7e2faa7db4ef5f7824af3aa601188595a5ebc3",
+    "notices": [
+      "COPYING"
+    ],
+    "sha256": "286ca5a5443b1fbb2977f526fb00a51d53d288176ffa319dbc4e2e25fb5a26f8"
+  },
+  "dswifi": {
+    "archive": "dswifi-84d91e8.tar.gz",
+    "directory": "dswifi-84d91e8c517bd7d15d38aff039640beaf359c230",
+    "url": "https://codeload.github.com/blocksds/dswifi/tar.gz/84d91e8c517bd7d15d38aff039640beaf359c230",
+    "notices": [
+      "COPYING",
+      "COPYING.lwip",
+      "COPYING.mbedtls"
+    ],
+    "sha256": "18cced834ecb8dc78d7f0f9f3de4eda6f8c32b87de362fee8de2f06de45f4882"
+  }
+}

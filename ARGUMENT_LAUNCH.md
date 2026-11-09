@@ -110,4 +110,4 @@ The source and assets inherited from upstream retain their original authors,
 credits and terms. New integration files are MIT-licensed as described in
 [ARGUMENT_LAUNCH_LICENSE.md](ARGUMENT_LAUNCH_LICENSE.md); this does not relicense the
 application or its dependencies. No game, book or separately supplied BIOS is
-added by this fork. No binary release has been published for this change.
+added by this fork. The download-only argv development release includes a standalone binary, notices and matching source; see [release builds](RELEASE_BUILD.md).

@@ -12,3 +12,6 @@ arm9/build/
 *.map
 *.nds
 __pycache__/
+
+# Versioned release artifacts.
+/dist/
