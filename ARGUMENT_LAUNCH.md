@@ -69,7 +69,7 @@ legacy formatted-output and heap-helper names from the new SDK. The application'
 normal Makefiles and SDK headers are not patched. This is a build option, not an
 upstream SDK migration or proof of hardware timing/audio compatibility.
 
-A complete BlocksDS build and the sanitized host tests passed locally. DSi-mode melonDS checks through Gloam verified argv cartridge startup through
+A complete BlocksDS build and the sanitized host tests passed locally. DSi-mode melonDS checks verified argv cartridge startup through
 the MSX2 firmware and into a game intro using a `.mx2` file. Disk boot, general
 title compatibility, performance, saves and physical-console behavior remain
 unverified.

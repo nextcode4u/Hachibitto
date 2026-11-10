@@ -1,4 +1,4 @@
-# Building the download-only argv release
+# Building an argv release
 
 The fork keeps upstream's devkitARM Makefiles and emulation code. Its optional
 BlocksDS adapter uses BlocksDS 1.25.0 and Wonderful GCC 16.2.0:
@@ -28,9 +28,9 @@ Marat Fayzullin (fMSX), Fredrik Ahlstrom (FluBBa sound cores) and Aleksey Vaneev
 The source and binary inherit upstream embedded MSX firmware and graphics whose
 redistribution permissions remain unconfirmed. This fork does not establish a
 new grant for those materials or add external BIOS files, games or user data.
-Gloam records this build as download-only: its Python/PowerShell scripts retrieve
-the executable from this release, with noncommercial opt-in, while its binary,
-source and notices remain outside Gloam's combined release archives.
+Install the executable with a compatible homebrew launcher and configure its
+file associations as needed. Preserve the accompanying notices and matching
+source; this release does not expand upstream redistribution permissions.
 
 `tools/notices/gcc-COPYING.RUNTIME` retains the GCC Runtime Library Exception 3.1.
 `tools/notices/picolibc-COPYING` retains the Wonderful Picolibc notice collection

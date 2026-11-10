@@ -87,7 +87,6 @@ def build(tag, skip_build=False):
         'Includes BlocksDS/libnds, Maxmod and DSWifi with their separate runtime notices.\n'
         'The upstream embedded MSX firmware and graphics remain inherited; redistribution permissions are unconfirmed.\n'
         'This fork adds no external BIOS or games and does not grant rights over inherited firmware or assets.\n'
-        'Gloam treats this release as download-only and excludes it from its combined binary/source/notice archives.\n'
         'Matching source accompanies this release. Runtime notice provenance is recorded in RELEASE_BUILD.md.\n').encode()
     # Preserve complete initial component notices, without copying implementation into the runtime ZIP.
     components = ['arm9/source/lzav.h', 'arm9/source/teenysha1.h',
