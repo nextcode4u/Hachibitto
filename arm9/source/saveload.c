@@ -29,7 +29,7 @@
 #pragma GCC optimize ("Os")
 // All functions written here will be optimized for size (-Os) - we need the space and this doesn't need to be fast
 
-#define MSX_SAVE_VER   0x0016  // Change this if the basic format of the .SAV file changes. Invalidates older .sav files.
+#define MSX_SAVE_VER   0x0017  // Change this if the basic format of the .SAV file changes. Invalidates older .sav files.
 
 // -----------------------------------------------------------------------------------------------------
 // Since the main MemoryMap[] can point to differt things (RAM, ROM, BIOS, etc) and since we can't rely
@@ -155,10 +155,10 @@ void msxSaveState(void)
                 Offsets[i].type = TYPE_BIOS1;
                 Offsets[i].offset = shifted_offset - MSXBios_MSX1;
             }
-            else if ((shifted_offset >= MSXBios_EXT2P) && (shifted_offset < MSXBios_EXT2P+(sizeof(MSXBios_EXT2P))))
+            else if ((shifted_offset >= MSXBios_SUB2P) && (shifted_offset < MSXBios_SUB2P+(sizeof(MSXBios_SUB2P))))
             {
                 Offsets[i].type = TYPE_EXT2P;
-                Offsets[i].offset = shifted_offset - MSXBios_EXT2P;
+                Offsets[i].offset = shifted_offset - MSXBios_SUB2P;
             }
             else if ((shifted_offset >= MSXBios_EXT2) && (shifted_offset < MSXBios_EXT2+(sizeof(MSXBios_EXT2))))
             {
@@ -325,7 +325,7 @@ void msxSaveState(void)
         if (retVal) retVal = fwrite(&msx_kana_lock,         sizeof(msx_kana_lock),          1, handle);
         if (retVal) retVal = fwrite(&myPaddle,              sizeof(myPaddle),               1, handle);
         if (retVal) retVal = fwrite(&render_blended,        sizeof(render_blended),         1, handle);
-        if (retVal) retVal = fwrite(&cold_or_warm_boot,     sizeof(cold_or_warm_boot),      1, handle);
+        if (retVal) retVal = fwrite(&system_status_f4,      sizeof(system_status_f4),       1, handle);
         if (retVal) retVal = fwrite(KanjiAdr,               sizeof(KanjiAdr),               1, handle);
         if (retVal) retVal = fwrite(&vdp_type,              sizeof(vdp_type),               1, handle);
         if (retVal) retVal = fwrite(NEO8_bank,              sizeof(NEO8_bank),              1, handle);
@@ -335,7 +335,11 @@ void msxSaveState(void)
         if (retVal) retVal = fwrite(ascii16xCfiBackup,      sizeof(ascii16xCfiBackup),      1, handle);
         if (retVal) retVal = fwrite(flashDirtyBlocks,       sizeof(flashDirtyBlocks),       1, handle);
         if (retVal) retVal = fwrite(sccFlashCommandState,   sizeof(sccFlashCommandState),   1, handle);
-
+        if (retVal) retVal = fwrite(XPal16,                 sizeof(XPal16),                 1, handle);
+        if (retVal) retVal = fwrite(&XPalReal0_16,          sizeof(XPalReal0_16),           1, handle);
+        if (retVal) retVal = fwrite(&vdp15_pending,         sizeof(vdp15_pending),          1, handle);
+        if (retVal) retVal = fwrite(&Pal15Epoch,            sizeof(Pal15Epoch),             1, handle);
+        
         if (retVal) retVal = fwrite(&spare,                 sizeof(spare),                  1, handle);
         if (retVal) retVal = fwrite(&spare,                 sizeof(spare),                  1, handle);
         if (retVal) retVal = fwrite(&spare,                 sizeof(spare),                  1, handle);
@@ -466,7 +470,7 @@ void msxLoadState(void)
                 }
                 else if (Offsets[i].type == TYPE_EXT2P)
                 {
-                    MemoryMap[i] = (u8 *) (MSXBios_EXT2P + Offsets[i].offset) - (0x2000 * i);
+                    MemoryMap[i] = (u8 *) (MSXBios_SUB2P + Offsets[i].offset) - (0x2000 * i);
                 }
                 else if (Offsets[i].type == TYPE_EXT2)
                 {
@@ -618,7 +622,7 @@ void msxLoadState(void)
             if (retVal) retVal = fread(&msx_kana_lock,         sizeof(msx_kana_lock),          1, handle);
             if (retVal) retVal = fread(&myPaddle,              sizeof(myPaddle),               1, handle);
             if (retVal) retVal = fread(&render_blended,        sizeof(render_blended),         1, handle);
-            if (retVal) retVal = fread(&cold_or_warm_boot,     sizeof(cold_or_warm_boot),      1, handle);
+            if (retVal) retVal = fread(&system_status_f4,      sizeof(system_status_f4),       1, handle);
             if (retVal) retVal = fread(KanjiAdr,               sizeof(KanjiAdr),               1, handle);
             if (retVal) retVal = fread(&vdp_type,              sizeof(vdp_type),               1, handle);
             if (retVal) retVal = fread(NEO8_bank,              sizeof(NEO8_bank),              1, handle);
@@ -628,6 +632,10 @@ void msxLoadState(void)
             if (retVal) retVal = fread(ascii16xCfiBackup,      sizeof(ascii16xCfiBackup),      1, handle);
             if (retVal) retVal = fread(flashDirtyBlocks,       sizeof(flashDirtyBlocks),       1, handle);
             if (retVal) retVal = fread(sccFlashCommandState,   sizeof(sccFlashCommandState),   1, handle);
+            if (retVal) retVal = fread(XPal16,                 sizeof(XPal16),                 1, handle);
+            if (retVal) retVal = fread(&XPalReal0_16,          sizeof(XPalReal0_16),           1, handle);
+            if (retVal) retVal = fread(&vdp15_pending,         sizeof(vdp15_pending),          1, handle);
+            if (retVal) retVal = fread(&Pal15Epoch,            sizeof(Pal15Epoch),             1, handle);
 
             if (retVal) retVal = fread(&spare,                 sizeof(spare),                  1, handle);
             if (retVal) retVal = fread(&spare,                 sizeof(spare),                  1, handle);
@@ -673,6 +681,7 @@ void msxLoadState(void)
 
     // Recalculate a few things on the VDP side...
     VPAGE=VDP_Memory+((int)VDP[14]<<14);
+    last_emulation_mode = 99;
     CheckNewMode();     // This will rebuild any lookup tables as needed
     RebuildPalLUT();    // And the screen 5 table needs a rebuild
 

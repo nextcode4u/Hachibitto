@@ -85,7 +85,7 @@ struct __attribute__((__packed__)) Config_t
     u8  frameSkip;
     u8  ymScale;
     u8  overscan;
-    u8  reserved1;
+    u8  yjkTrueColor;
     u8  reserved2;
     u8  reserved3;
     u8  reserved4;
@@ -212,7 +212,7 @@ extern u8 Unmapped_Memory[0x2000];
 #define KOEI_SRAM_Memory (RAM_Memory + (MAX_RAM_SIZE_KB*1024) - (32*1024))
 
 extern const unsigned char MSXBios_MSX2P[0x8000];
-extern const unsigned char MSXBios_EXT2P[0x4000];
+extern const unsigned char MSXBios_SUB2P[0x4000];
 extern const unsigned char MSXBios_MSX1[0x8000];
 extern const unsigned char MSXBios_DISK[0x4000];
 extern const unsigned char MSXBios_FMPAC[0x4000];
@@ -220,7 +220,7 @@ extern const unsigned char MSXBios_KANJI[0x8000];
 extern const unsigned char MSXBios_MSX2[0x8000];
 extern const unsigned char MSXBios_EXT2[0x4000];
 
-extern u8  cold_or_warm_boot;
+extern u8 system_status_f4;
 extern u32 KanjiAdr[2];
 
 typedef struct
@@ -286,6 +286,7 @@ extern u8 ascii16xFlashCmdState[3];
 extern u8 ascii16xFlashReadMode[3];
 extern u8 ascii16xCfiBackup[3][ASCII16X_CFI_SIZE];
 extern u8 sccFlashCommandState[2];
+extern u8 last_emulation_mode;
 
 // --------------------------------------------------
 // Some CPU and VDP and SGM stuff that we need

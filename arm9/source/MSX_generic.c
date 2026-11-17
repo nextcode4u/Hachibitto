@@ -1122,7 +1122,7 @@ static const GameTweak gameTweaks[] =
     {"BUSHOUHUUNROKU",  NULL,                EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
     {"CRIMSON",         NULL,                EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
     {"DEAD",            "BRAIN",             EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
-    {"DIX",             NULL,                EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
+    {"DIX",             NULL,                EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         YM_BAL_HIGH},
     {"EMERALD",         "DRAGON",            EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
     {"EUROPE",          "WAR",               EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
     {"EXTERLIEN",       NULL,                EXP_FM_PAC,  TWEAK_NONE,     TWEAK_NONE, TWEAK_NONE,    TWEAK_NONE,         TWEAK_NONE},
@@ -1284,6 +1284,9 @@ void ApplyDatabaseTweaks(void)
         dix_patch = 1;
     }
 
+    // ----------------------------------------------------------
+    // A few overscan games...
+    // ----------------------------------------------------------
     if (strstr(filename, "FIX") && strstr(filename, "FELIX"))
     {
         myConfig.overscan = 1;
@@ -1300,6 +1303,9 @@ void ApplyDatabaseTweaks(void)
         myConfig.overscan = 1;
     }
 
+    // ----------------------------------------------------------
+    // And some odd-balls... At least for the games tested...
+    // ----------------------------------------------------------
     if (strstr(filename, "MAIDEN") && strstr(filename, "FIST"))
     {
         myConfig.cpuBoost = 1;      // For some reason Maiden's Fist homebrew needs a bit more speed to detect right
@@ -1310,6 +1316,11 @@ void ApplyDatabaseTweaks(void)
     {
         myConfig.cpuBoost = 1;      // For a bit more speed!
         myConfig.splitRefresh = 1;  // And adjust the split refresh to be safe
+    }
+    
+    if (strstr(filename, "MEGADOOM"))
+    {
+        myConfig.yjkTrueColor = 0;  // MEGADOOM does some crazy stuff with the screen that causes problems with 8-bit vs 16-bit color switches... so just stay 8-bit
     }
 }
 
@@ -1399,7 +1410,7 @@ void SetDefaultGameConfig(void)
     myConfig.frameSkip = (isDSiMode() ? 0 : 1); // Frame Skip is disabled on DSi and above
     myConfig.ymScale = YM_BAL_MAX;              // Normal YM is scaled to be the loudest
     myConfig.overscan = 0;                      // VDP Overscan disabled until specifically enabled
-    myConfig.reserved1 = 0;
+    myConfig.yjkTrueColor = 1;                  // 1=Enable 32K color depth, 0=256 color decimation (faster)
     myConfig.reserved2 = 0;
     myConfig.reserved3 = 0;
     myConfig.reserved4 = 0;
@@ -1523,8 +1534,10 @@ const struct options_t Option_Table[2][20] =
         {"FRAMESKIP",       {"NONE", "LIGHT", "AGGRESSIVE"},                                                                                                            &myConfig.frameSkip,         3},
         {"YM BALANCE",      {"LOW", "MEDIUM", "HIGH", "MAX"},                                                                                                           &myConfig.ymScale,           4},
         {"VDP OVERSCAN",    {"OFF", "ENABLED"},                                                                                                                         &myConfig.overscan,          2},
+        {"YJK COLORS",      {"256 (FAST)", "32K (SLOW)"},                                                                                                               &myConfig.yjkTrueColor,      2},
         {"Y OFFSET",        {"None", "+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12", "+13", "+14", "+15", "+16", "+17", "+18", "+19",
                              "+20", "+21", "+22", "+23", "+24", "+25", "+26", "+27", "+28", "+29", "+30", "+31", "+32"},                                                &myConfig.yOffset,           33},
+                                        
         {NULL,              {"", ""},                                                                                                                                   NULL,                        1},
     },
 
