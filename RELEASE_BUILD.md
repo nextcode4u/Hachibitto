@@ -7,7 +7,7 @@ BlocksDS adapter uses BlocksDS 1.25.0 and Wonderful GCC 16.2.0:
 sh tests/run-argv-tests.sh
 python3 tools/build_blocksds.py --clean --jobs 4
 # Commit source changes before preparing an identified release.
-python3 tools/build_release.py --tag v1.9-argv.1 --skip-build
+python3 tools/build_release.py --tag v2.0-argv.1 --skip-build
 ```
 
 `tools/release-dependencies.json` identifies checksum-pinned SDK, libnds, Maxmod
@@ -43,3 +43,13 @@ This is a development build. Cartridge argv startup has been exercised in a
 DSi-mode emulator; disk boot, saves, performance and physical-console behavior
 remain unverified. Keep checking the physical 32 KiB ITCM limit after changes;
 the build adapter does not enlarge linker memory limits.
+
+## Upstream 2.0 compatibility
+
+This branch includes upstream's staged 2.0 video and audio changes. It is not a
+published argv release yet. Upstream changes the save-state format from `0x0016`
+to `0x0017`; 1.9 `.sav` states cannot be loaded by this build. Cartridge `.srm`
+saves are separate from those emulator snapshots. Do not replace an older state
+with a new one if you still need to return to 1.9. The argv bridge host checks and
+BlocksDS build pass; the merged emulator still needs game, audio and save tests
+on a console before a release can claim those results.
