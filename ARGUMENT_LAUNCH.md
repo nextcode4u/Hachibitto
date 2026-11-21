@@ -74,11 +74,10 @@ the MSX2 firmware and into a game intro using a `.mx2` file. Disk boot, general
 title compatibility, performance, saves and physical-console behavior remain
 unverified.
 
-The adapter compiles the top-level `Hachibitto.c` UI/audio unit with `-Os` so the
-new SDK's routines fit physical 32 KiB ITCM; CPU/video emulation units retain
-upstream's `-O2`. The tested map uses 32,736 bytes of ITCM (32 bytes spare), so
-future changes must be checked against the linker map. The linker memory limits
-have not been enlarged. Performance impact has not been measured on hardware.
+The adapter compiles the top-level `Hachibitto.c` UI/audio unit as Thumb with
+`-Os`; CPU/video emulation units retain upstream ARM `-O2`. The 2.1 build uses
+32,488 bytes of physical 32 KiB ITCM (280 bytes spare). The linker limit remains
+unchanged. Recheck the map after updates; timing and audio need hardware testing.
 
 ## Keeping up with upstream
 

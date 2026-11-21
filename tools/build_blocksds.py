@@ -72,10 +72,10 @@ def build(args):
             objects.append(obj)
             compiler = gxx if source.suffix == '.cpp' else gcc
             extra = cppflags if source.suffix == '.cpp' else cflags
-            # The newer SDK adds ITCM routines; keep Hachibitto's top-level UI/audio
-            # unit compact while leaving the CPU/video cores at their upstream -O2.
+            # The UI/audio unit uses Thumb -Os to fit the SDK and emulator in
+            # physical ITCM. CPU/video cores keep upstream ARM -O2.
             if source.name == 'Hachibitto.c':
-                extra = [*extra, '-Os']
+                extra = [*extra, '-Os', '-mthumb']
             if source.suffix == '.s':
                 extra = ['-x', 'assembler-with-cpp', '-DSCCMULT=128', '-DAY_UPSHIFT=3', '-DNDS']
             commands.append([compiler, *flags, *extra, '-c', source, '-o', obj])
