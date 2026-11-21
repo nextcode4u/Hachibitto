@@ -46,7 +46,7 @@ the build adapter does not enlarge linker memory limits.
 
 ## Upstream 2.1 compatibility
 
-This branch includes upstream 2.1. It is not a published argv release yet.
+This argv release includes upstream 2.1.
 The save-state version is `0x0019`: states from 1.9 (`0x0016`) and 2.0 (`0x0017`)
 cannot load. Cartridge `.srm` saves are separate. Keep older states if you need
 to return to an older emulator; do not overwrite them with new snapshots.
